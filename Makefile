@@ -38,9 +38,13 @@ DOCKER_BUILD     := $(NV_DOCKER) build --build-arg USER_ID="$(shell id -u)" \
                                        --build-arg PKG_REV="$(PKG_REV)" \
                                        --build-arg PKG_ARCH="$(PKG_ARCH)"
 
-.PHONY: all build install uninstall clean distclean tarball deb rpm
+.PHONY: all developer build install uninstall clean distclean tarball deb rpm
 
 all: build
+
+developer: distclean
+	@mkdir -p developer
+	@$(DOCKER_BUILD) -t $(PKG_NAME):$@ -f Dockerfile.$@ $(CURDIR)
 
 build: distclean
 	@mkdir -p $(BIN_DIR)
